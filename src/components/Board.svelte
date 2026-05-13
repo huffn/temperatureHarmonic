@@ -124,22 +124,6 @@
 										inCurrentRow={!$gameFinished && r === $currentRow}
 										showHint={!$gameFinished && (t === $currentTile || $showAllHints)}
 									>
-										{#if !idle && !$guesses[0] && r === ROWS - 1}
-											<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
-											<div
-												class="dance-tile"
-												style:opacity={danceClickProgress / 5 || 1}
-												on:click={() => danceClick(t)}
-												out:fade|global={{ duration: danceClickProgress === 5 ? 500 : 0 }}
-											>
-												{'DANCE'.substring(0, danceClickProgress)[t] || ''}
-											</div>
-										{/if}
-										{#if idle && tile.letter === '' && r > $currentRow && !tile.animal}
-											{#await import('$com/Idler.svelte') then module}
-												<svelte:component this={module.default} id={r + ':' + t} />
-											{/await}
-										{/if}
 									</Tile>
 								{/each}
 							</div>
@@ -150,11 +134,6 @@
 						<LastGameDetail lastGameDetail={$lastGameDetail} />
 					{/key}
 				{/if}
-			</div>
-		{/if}
-		{#if !$hideLandscape}
-			<div class="landscape" style:padding-top={$landscapeWideView ? '20px' : 0}>
-				<Landscape />
 			</div>
 		{/if}
 	{:else}
