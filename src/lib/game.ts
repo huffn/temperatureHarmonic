@@ -18,16 +18,10 @@ export async function isValidWord(word: string): Promise<boolean> {
 	return dictionary!.includes(word)
 }
 
-export type GameMode = 'daily' | 'random'
+export type GameMode = 'random'
 
 export function playDaily() {
 	const previousGameMode = get(store.gameMode)
-	if (previousGameMode !== 'daily') {
-		if (!get(store.gameFinished)) {
-			pauseTimer()
-		}
-		store.gameMode.set('daily')
-	}
 	resumeTimer()
 	tick().then(() => pushState(window.location.pathname + window.location.search, {})) // Remove # from URL
 	const dayNumber = getDayNumber()
@@ -48,14 +42,14 @@ export function playDaily() {
 	store.landscapeWideView.set(false)
 }
 
-export function playRandom(word?: string) {
+export function playRandom(word?: string, forceNewGame = false) {
 	const previousGameMode = get(store.gameMode)
 	if (previousGameMode !== 'random') {
 		if (!get(store.gameFinished)) {
 			pauseTimer()
 		}
 		store.gameMode.set('random')
-	}
+  }
 	resumeTimer()
 	const currentAnswer = get(store.answerRandom)
 	const newGame = (word && word !== currentAnswer) || !currentAnswer
@@ -64,7 +58,15 @@ export function playRandom(word?: string) {
 	tick().then(() =>
 		pushState(window.location.pathname + `#${hash}` + window.location.search, {})
 	)
-	if (newGame) {
+  if (newGame) {
+    const sequenceNumber = get(store.sequenceOfGame)
+    if (!forceNewGame) {
+      if (word && sequenceNumber < 3) {
+        store.sequenceOfGame.set(sequenceNumber + 1)
+      } else {
+        store.sequenceOfGame.set(1)
+      }
+    }
 		store.guessesRandom.set([])
 		store.answerRandom.set(answer)
 		resetBoard()

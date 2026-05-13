@@ -22,7 +22,7 @@ export const lastPlayedRandomWasHard: Writable<boolean> = persisted(
 	false
 )
 
-export const gameMode: Writable<GameMode> = writable('daily')
+export const gameMode: Writable<GameMode> = writable('random')
 export const hardMode: Writable<boolean> = persisted('wp-hardMode', false)
 
 export const lastPlayedWasHard: Readable<boolean> = derived(
@@ -83,6 +83,8 @@ export const gameFinished: Readable<boolean> = derived(
 	[currentRow, gameWon],
 	([$currentRow, $gameWon]) => $gameWon || $currentRow === ROWS
 )
+
+export const sequenceOfGame: Writable<number> = persisted('wp-sequenceOfGame', 1)
 
 export const validLetters: Readable<Set<string>> = derived(
 	[boardContent, currentRow, currentTile, gameFinished],

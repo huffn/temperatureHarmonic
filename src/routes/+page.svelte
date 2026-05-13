@@ -27,12 +27,8 @@
 
 	onMount(() => {
 		nlgid = get(page).url.searchParams.get('nlgid')
-		if (!get(store.answerDaily) && !get(store.answerRandom)) {
-			store.newUser.set(true)
-			openScreen.set('tutorial')
-		}
 		if (!wordFromHash) {
-			playDaily()
+			playRandom()
 		} else {
 			playRandom(wordFromHash)
 		}
@@ -56,7 +52,7 @@
 			{/await}
 		{/if}
 	</section>
-	<Footer />
+	<!-- <Footer /> -->
 	{#if nlgid}
 		{#await import('$com/NiceLight.svelte') then module}
 			<svelte:component this={module.default} {nlgid} />

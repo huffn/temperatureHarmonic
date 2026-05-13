@@ -47,7 +47,7 @@
 		{/each}
 	</table>
 	<h2>
-		{gameWon ? `${$t('main.results.win')} 🎉` : `${$t('main.results.lose')} ☹️`}
+		{gameWon ? `${$t('main.results.win')}` : `${$t('main.results.lose')}`}
 	</h2>
 	<div class="info">
 		<div class="info-item">

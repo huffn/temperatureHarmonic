@@ -26,13 +26,14 @@
 		"enter": "Enter"
 	},
 	"results": {
-		"win": "You got it!",
-		"lose": "Oh no!",
+		"win": "Answer Accepted",
+		"lose": "Incorrect Entry",
 		"answer": "The answer was <strong>{{answer}}</strong>",
 		"try_today": "Try today's word!",
 		"next_word": "Next word",
 		"play_daily": "Play Daily",
-		"play_random": "Play Random",
+		"play_random": "Next Sequence",
+		"play_randomLast": "Begin New Calibration",
 		"share": "Share",
 		"text": "Text",
 		"image": "Image",

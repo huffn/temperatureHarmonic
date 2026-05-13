@@ -21,7 +21,7 @@
 	const toastTheme = { theme: { '--toastBackground': 'var(--cta-color)' } }
 	const newRandomWord: MouseEventHandler<HTMLButtonElement> = (event) => {
 		const gameInProgress = !get(gameFinished)
-		playRandom(getRandomWord())
+		playRandom(getRandomWord(), true)
 		event.currentTarget.blur()
 		if (gameInProgress) toast.push(get(t)('main.messages.answer_randomized'), toastTheme)
 	}
@@ -34,77 +34,24 @@
 <header class:high-contrast={$highContrast}>
 	<div class="heading-container">
 		<h1>
-			<span class:herd={herdActive}>{isAprilFools ? 'Herd' : 'Word'}</span> Peaks
-			{#if browser}
-				<small class="game-mode">
-					{#if $gameMode === 'daily'}
-						#{$lastPlayedDaily + 1}
-					{:else}
-						<svg viewBox="0 0 6 3" xmlns="http://www.w3.org/2000/svg" width="32px">
-							<title>{$t('main.summary.random')}</title>
-							<path
-								stroke="#888"
-								fill="none"
-								d="M2.29 0.79 l1.41 1.41 a1 1 0 1 0 0 -1.41 l-1.41 1.41 a1 1 0 1 1 0 -1.41"
-								stroke-width="0.5"
-							/>
-						</svg>
-					{/if}
-				</small>
-			{/if}
+		    Temperature Calibration Control
 		</h1>
-		{#if browser}
-			<div class="game-mode-buttons">
-				<button on:click={playDaily} disabled={$gameMode === 'daily'}>
-					{$t('main.summary.daily')}
-				</button>
-				<button on:click={() => playRandom()} disabled={$gameMode !== 'daily'}>
-					{$t('main.summary.random')}
-				</button>
-				{#if $gameMode !== 'daily'}
-					<button
-						transition:fly|global={{ x: -10, duration: 150 }}
-						on:click={newRandomWord}
-						class="new-random"
-						title={$t('main.other.new_word')}
-					>
-						<svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" width="21px">
-							<path
-								stroke="currentColor"
-								fill="none"
-								d="M3.5 1.5 v4 M1.5 3.5 h4"
-								stroke-width="1"
-								stroke-linecap="round"
-							/>
-						</svg>
-					</button>
-				{/if}
-			</div>
-		{/if}
 	</div>
 	<div class="menu-buttons" style:visibility={browser ? 'visible' : 'hidden'}>
 		<button
-			title={$t('main.tutorial.title')}
-			class="bulge"
-			on:click={() => openScreen.set('tutorial')}><span>?</span></button
+			title={$t('main.other.new_word')}
+			class="new-random"
+			on:click={newRandomWord}
 		>
-		<button title={$t('main.stats.title')} on:click={() => openScreen.set('stats')}>
-			<svg viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-				<g transform="rotate(180 4.5 4.5)">
-					<rect fill="currentColor" id="graph_bar_1" x="0" y="0" height="8" width="2" />
-					<rect fill="currentColor" x="3" y="0" height="5" width="2" />
-					<rect fill="currentColor" id="graph_bar_3" x="6" y="0" height="2" width="2" />
-				</g>
-			</svg>
-		</button>
-		<button
-			title={$t('main.options.title')}
-			class="hover-spin"
-			on:click={() => openScreen.set('options')}
-		>
-			<svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-				<path fill="currentColor" d={OptionsIconPathData} />
-			</svg>
+			<svg viewBox="0 0 7 7" xmlns="http://www.w3.org/2000/svg" width="21px">
+						<path
+							stroke="currentColor"
+							fill="none"
+							d="M3.5 1.5 v4 M1.5 3.5 h4"
+							stroke-width="1"
+							stroke-linecap="round"
+						/>
+					</svg>
 		</button>
 	</div>
 </header>

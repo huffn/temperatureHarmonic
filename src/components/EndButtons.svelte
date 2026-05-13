@@ -109,87 +109,30 @@
 		)
 		return () => clearInterval(nextWordInterval)
 	})
+
+	const sequenceNumber = get(store.sequenceOfGame) ? get(store.sequenceOfGame) : 1
 </script>
 
 <div class="container">
 	<div class="actions" class:full-width={showScoreShareMenu}>
-		{#if showScoreShareMenu}
-			<div class="results-buttons">
-				<button on:click={shareText}>{$t('main.results.text')}</button>
-				<button on:click={onBoardImageShare}>{$t('main.results.image')}</button>
+		<div class="action-items">
+		    <div class="countdown">
+				{#if sequenceNumber !== 3}
+                    <h3>{sequenceNumber} of 3 Completed</h3>
+                {:else}
+                    <h3>Temperature has been calibrated</h3>
+                {/if}
+
 			</div>
-			<div class="results-options">
-				{#each toggleOptions as { store, label }}
-					<Toggle {store} label={$t(label)} small />
-				{/each}
-			</div>
-		{:else}
-			<div class="action-items">
-				<button on:click={() => (showScoreShareMenu = true)}>
-					{$t('main.results.share')}
-				</button>
-				{#if gameMode === 'daily'}
-					{#if nextWordReady}
-						<button class="play-button" on:click={playDaily}>
-							{$t('main.results.play_daily')}
-						</button>
-					{:else}
-						<div class="countdown">
-							<Time mode="countdown" alwaysShowHours ms={nextDailyTime} class="time">
-								<h3 slot="title">{$t('main.results.next_word')}</h3>
-							</Time>
-						</div>
-					{/if}
-				{:else}
-					<button class="play-button" on:click={() => playRandom(getRandomWord())}>
-						{$t('main.results.play_random')}
-					</button>
-				{/if}
-			</div>
-		{/if}
-	</div>
-	{#if !showScoreShareMenu && !$hideLandscape}
-		<div class="landscape-controls">
-			<button
-				title={$t('main.other.wide_view')}
-				class:cta-bg={$landscapeWideView}
-				on:click={() => landscapeWideView.set(!$landscapeWideView)}
-			>
-				<Icon icon="wide" active={$landscapeWideView} />
+			<button class="play-button" on:click={() => playRandom(getRandomWord())}>
+				{#if sequenceNumber !== 3}
+                    {$t('main.results.play_random')}
+                {:else}
+                    {$t('main.results.play_randomLast')}
+                {/if}
 			</button>
-			<button
-				title={$t('main.other.color')}
-				class:cta-bg={$landscapeForceColor}
-				on:click={() => landscapeForceColor.set(!$landscapeForceColor)}
-			>
-				<Icon icon="color" active={$landscapeForceColor} />
-			</button>
-			<button
-				title={$t('main.other.redraw')}
-				disabled={landscapeRedrawCooldown}
-				on:click={() => {
-					landscapeRedrawCooldown = true
-					setTimeout(() => (landscapeRedrawCooldown = false), 2000)
-					landscapeRedraw.set(true)
-				}}
-			>
-				<Icon icon="redraw" />
-			</button>
-			<button title={$t('main.results.share')} on:click={onLandscapeShare}>
-				<Icon icon="photo" />
-			</button>
-			<div class="promo">
-				<a
-					on:auxclick={() => trackEvent('promoLinkFollow')}
-					on:click={() => trackEvent('promoLinkFollow')}
-					href="https://buymeacoffee.com/vegeta897"
-				>
-					<span class="hide-on-small-screens">{$t('main.footer.donate')}</span>
-					<span class="hide-on-big-screens">{$t('main.footer.donate_short')}</span>
-				</a>
-			</div>
 		</div>
-	{/if}
+	</div>
 </div>
 <ImageResults bind:this={imageResultsComponent} {shareTitleText} />
 
